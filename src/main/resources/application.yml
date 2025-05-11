@@ -1,0 +1,64 @@
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: ${sky.datasource.driver-class-name}
+    url: ${sky.datasource.url}
+    username: ${sky.datasource.username}
+    password: ${sky.datasource.password}
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+  data:
+    redis:
+      host: ${sky.redis.host}
+      port: ${sky.redis.port}
+      database: ${sky.redis.database}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${sky.security.oauth2.client.registration.google.client-id}
+            client-secret: ${sky.security.oauth2.client.registration.google.client-secret}
+            redirect-uri: ${sky.security.oauth2.client.registration.google.redirect-uri}
+            scope: ${sky.security.oauth2.client.registration.google.scope}
+        provider:
+          google:
+            authorization-uri: ${sky.security.oauth2.client.provider.google.authorization-uri}
+            token-uri: ${sky.security.oauth2.client.provider.google.token-uri}
+            user-info-uri: ${sky.security.oauth2.client.provider.google.user-info-uri}
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #Mybatis log
+    map-underscore-to-camel-case: true #camel naming auto case
+  mapper-locations: classpath:mapper/*.xml
+
+sky:
+  jwt:
+    #jwt sign key
+    admin-secret-key: ${sky.jwt.admin-secret-key}
+    #jwt expire time
+    admin-ttl: ${sky.jwt.admin-ttl}
+    #token name from front end
+    admin-token-name: ${sky.jwt.admin-token-name}
+    user-secret-key: ${sky.jwt.user-secret-key}
+    user-ttl: ${sky.jwt.user-ttl}
+    user-token-name: ${sky.jwt.user-token-name}
+  oss:
+    endpoint: ${sky.oss.endpoint}
+    access-key-id: ${sky.oss.access-key-id}
+    access-key-secret: ${sky.oss.access-key-secret}
+    bucket-name: ${sky.oss.bucket-name}
+  user-frontend:
+    redirect-url: ${sky.user-frontend.redirect-url}
+
+#log for transaction
+logging:
+  level:
+    org.springframework.jdbc.support.JdbcTransactionManager: debug
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytakeaway.server.mapper.CategoryMapper">
+
+    <update id="updateCategory" parameterType="com.skytakeaway.pojo.entity.Category">
+        update category_table
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="pageQuery" resultType="com.skytakeaway.pojo.entity.Category">
+        select id,
+        name,
+        type,
+        sort,
+        status,
+        create_time,
+        update_time,
+        create_user,
+        update_user
+        from category_table
+        <where>
+            <if test="name != null and name !=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
+        order by sort asc
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skytakeaway.server.mapper.SetmealDishMapper">
+    <insert id="insertBatch">
+        insert into setmeal_dish_table (setmeal_id, dish_id, name, price, copies) values
+        <foreach collection="dishItems" item="item" separator=",">
+            (#{item.setmealId}, #{item.dishId}, #{item.name}, #{item.price}, #{item.copies})
+        </foreach>
+    </insert>
+
+    <update id="updateDishInformation">
+        update setmeal_dish_table
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+        </set>
+        where dish_id = #{id}
+    </update>
+
+    <delete id="batchDeletion">
+        delete from setmeal_dish_table where setmeal_id in
+        <foreach collection="setmealIds" item="setmealId" separator="," open="(" close=")">
+            #{setmealId}
+        </foreach>
+    </delete>
+
+    <select id="getSetmealIdsByDishIds" resultType="java.lang.Long">
+        select setmeal_id from setmeal_dish_table where dish_id in
+        <foreach collection="dishIds" item="dishId" separator="," open="(" close=")">
+            #{dishId}
+        </foreach>
+    </select>
+
+    <select id="getBySetmealIds" resultType="com.skytakeaway.pojo.entity.DishItem">
+        select * from setmeal_dish_table where setmeal_id in
+        <foreach collection="setmealIds" item="setmealId" separator="," open="(" close=")">
+            #{setmealId}
+        </foreach>
+    </select>
+
+</mapper>
